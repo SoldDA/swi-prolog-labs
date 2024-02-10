@@ -17,6 +17,7 @@ woman(bozhedara).
 woman(broneslava).
 woman(veselina).
 woman(zdislava).
+woman(kapa).
 
 parent(voeneg,ratibor).
 parent(voeneg,bratislava).
@@ -27,6 +28,7 @@ parent(goluba,ratibor).
 parent(goluba,bratislava).
 parent(goluba,velerad).
 parent(goluba,zhdana).
+parent(goluba,kapa).
 
 parent(ratibor,bogomil).
 parent(bratislava,bogomil).
@@ -106,8 +108,8 @@ grand_dats(X):- grand_da(X,Y), print(Y), nl, fail.
 % ли X и Y дедушкой и внучкой или внучкой и дедушкой.
 grand_pa_and_da(X,Y):- parent(Y,Z), father(Z,X), woman(X); parent(Y,Z), mother(Z,X), woman(X), !.
 
-% Построить предикат, который проверяет, является ли X тетей Y.
+% Построить предикат aunt(+X,+Y), который проверяет, является ли X тетей Y.
 % Построить предикат, который выводит всех тетей X.
-sister(X,Y):- parent(Z,X), parent(Z,Y), woman(X).
-aunt(X,Y):- woman(X), father(Z,Y), sister(X,Z).
-aunt(X):- aunt(Y,X), print(Y), nl, fail.
+sister(X, Y):- woman(X), woman(Z), parent(Z, X), parent(Z, Y), X \= Y.
+aunt(X, Y):- sister(X, Z), parent(Z, Y).
+aunts(X):- aunt(Y, X), print(Y), nl, fail.

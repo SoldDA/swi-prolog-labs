@@ -3,13 +3,13 @@ in_list(A, B):- member(B, A).
 main:-
     Liquids = [_, _, _, _],
 
-    % Каждой жидкоти по сосуду
+    % ГЉГ Г¦Г¤Г®Г© Г¦ГЁГ¤ГЄГ®ГІГЁ ГЇГ® Г±Г®Г±ГіГ¤Гі
     in_list(Liquids, [water, Liquids1]),
     in_list(Liquids, [milk, Liquids2]),
     in_list(Liquids, [lemonade, Liquids3]),
     in_list(Liquids, [kvass, Liquids4]),
 
-    % Список сосудов для перебора
+    % Г‘ГЇГЁГ±Г®ГЄ Г±Г®Г±ГіГ¤Г®Гў Г¤Г«Гї ГЇГҐГ°ГҐГЎГ®Г°Г 
     in_list(Liquids, [_, bottle]),
     in_list(Liquids, [_, glass]),
     in_list(Liquids, [_, jug]),

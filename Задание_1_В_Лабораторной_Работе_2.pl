@@ -30,6 +30,28 @@ free_sqrt(X):-
     NewX is RoundSqrt * RoundSqrt,
     NewX =:= X.
 
+% Найти сумму цифр числа с помощью рекурсии вверх.
+% sum_digits_up(+Number, -Sum).
+sum_digits_up(0, 0).
+sum_digits_up(Number, Sum):-
+    Number > 0,
+    Number1 is Number mod 10,
+    Number2 is Number // 10,
+    sum_digits_up(Number2, Sum1),
+    Sum is Sum1 + Number1.
+
+%Найти сумму цифр числа с помощью рекурсии вниз.
+sum_digits_down(Number, Sum):-
+    sum_digits_down_help(Number, 0, Sum).
+
+sum_digits_down_help(0, Summa, Summa).
+sum_digits_down_help(Number, CurSum, AllSum):-
+    Number > 0,
+    Number1 is Number mod 10,
+    Number2 is Number // 10,
+    NextCurSum is CurSum + Number1,
+    sum_digits_down_help(Number2, NextCurSum, AllSum).
+
 % Реализовать предикат чтения списка с клавиатуры и предикат вывода списка на экран.
 read_list(List):-
     write('Введите список: '),

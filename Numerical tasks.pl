@@ -1,7 +1,7 @@
 % Реализовать предикат max(+X,+Y,+U,-Z), где U максимальное из чисел X,Y и Z.
 max(X,Y,U,Z):- (X >= Y, X >= Z -> U = X; Y >= X, Y >= Z -> U = Y; U = Z).
 
-% Реализовать предикат fact(N,X), где X – это факториал первого аргумента
+% Реализовать предикат fact(+N,-X), где X – это факториал первого аргумента
 % с помощью рекурсии вверх.
 fact(0, 1):- !. % Дно
 fact(N, X):-
@@ -10,7 +10,7 @@ fact(N, X):-
     fact(N1, X1), % Вызор рекурсии для N1
     X is N * X1. % Вычисление факториала, умножая на факториал N1
 
-% Реализовать предикат fact(N,X), где X – это факториал первого аргумента
+% Реализовать предикат fact(+N,-X), где X – это факториал первого аргумента
 % с помощью рекурсии вниз.
 fact(N, X):-
     next_fact(N, 1, X).
@@ -23,7 +23,7 @@ next_fact(N, Ans, X):-
     next_fact(N1, Ans1, X).
 
 % ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-% Проверить, является ли число свободным от квадратов ???
+% Проверить, является ли число свободным от квадратов free_sqrt(+X).
 free_sqrt(X):-
     Sqrt is sqrt(X),
     round(Sqrt, RoundSqrt),
@@ -40,7 +40,8 @@ sum_digits_up(Number, Sum):-
     sum_digits_up(Number2, Sum1),
     Sum is Sum1 + Number1.
 
-%Найти сумму цифр числа с помощью рекурсии вниз.
+% Найти сумму цифр числа с помощью рекурсии вниз.
+% sum_digits_down(+Number, -Sum).
 sum_digits_down(Number, Sum):-
     sum_digits_down_help(Number, 0, Sum).
 
@@ -52,7 +53,7 @@ sum_digits_down_help(Number, CurSum, AllSum):-
     NextCurSum is CurSum + Number1,
     sum_digits_down_help(Number2, NextCurSum, AllSum).
 
-% Реализовать предикат чтения списка с клавиатуры и предикат вывода списка на экран.
+% Реализовать предикат чтения списка с клавиатуры и предикат вывода списка на экран. read_list(+List)
 read_list(List):-
     write('Введите список: '),
     read(List),
@@ -93,15 +94,14 @@ sum_list_up_next([H|T], CurSum, Sum):-
     NewCurSum is CurSum + H,
     sum_list_up_next(T, NewCurSum, Sum).
 
-% Построить предикат, который удаляет все элементы, сумма цифр которых
-% равна данной.
-% Сумма цифр
+% Построить предикат, который удаляет все элементы, сумма цифр которых равна данной.
+% Сумма цифр sum_number(+Number, -Sum).
 sum_number(Number, Sum):-
     number_chars(Number, Chars), % number_chars - преобразовывает число в список символов
     maplist(atom_number, Chars, Digits), % maplist - позволяет преобразовать символ в число
     sum_list(Digits, Sum). % Сумма чисел в списке
 
-% Удаление эл-ов из списка, где сумма чисел равна заданной
+% Удаление эл-ов из списка, где сумма чисел равна заданной rm_elem_as_list(+Sum, +List, -Res).
 rm_elem_as_list(_, [], []). % Если список пуст, то результат тоже "пуст"
 rm_elem_as_list(Sum, [H|T], Res):-
     sum_number(H, HSum), % Вычисляем сумму цифр головы списка

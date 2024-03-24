@@ -25,3 +25,4 @@ main:-
     write('Milk - '), write(Liquids2), nl,
     write('Lemonade - '), write(Liquids3), nl,
     write('Kvass - '), write(Liquids4), nl.
+

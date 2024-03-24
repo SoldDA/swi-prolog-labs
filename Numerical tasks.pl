@@ -95,16 +95,10 @@ sum_list_up_next([H|T], CurSum, Sum):-
     sum_list_up_next(T, NewCurSum, Sum).
 
 % Построить предикат, который удаляет все элементы, сумма цифр которых равна данной.
-% Сумма цифр sum_number(+Number, -Sum).
-sum_number(Number, Sum):-
-    number_chars(Number, Chars), % number_chars - преобразовывает число в список символов
-    maplist(atom_number, Chars, Digits), % maplist - позволяет преобразовать символ в число
-    sum_list(Digits, Sum). % Сумма чисел в списке
-
 % Удаление эл-ов из списка, где сумма чисел равна заданной rm_elem_as_list(+Sum, +List, -Res).
 rm_elem_as_list(_, [], []). % Если список пуст, то результат тоже "пуст"
 rm_elem_as_list(Sum, [H|T], Res):-
-    sum_number(H, HSum), % Вычисляем сумму цифр головы списка
+    sum_digits_down(H, HSum), % Вычисляем сумму цифр головы списка
     (   HSum == Sum -> rm_elem_as_list(Sum, T, Res)
     ;   Res = [H|R],
         rm_elem_as_list(Sum, T, R)

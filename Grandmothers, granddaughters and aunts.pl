@@ -53,7 +53,6 @@ parent(duhovlad,zlatomir).
 parent(zhdana,zdislava).
 parent(zhdana,zlatomir).
 
-
 men():- man(X), print(X), nl, fail.
 women():- woman(X), print(X), nl, fail.
 

@@ -1,8 +1,8 @@
 main :-
-    retractall(asked(_,_)), fault(Problem),
-    !,
+    retractall(asked(_,_)), fault(Problem), !,
     nl,
     write('The problem is '), write(Problem), write(.), nl.
+    
 main :-
     nl,
     write('The problem cannot be recognized.'), nl.

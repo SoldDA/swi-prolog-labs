@@ -69,16 +69,18 @@ elem_after_max([H|T], Max, Res):-
 main_three(N, Max):-
     read_list(N, List), nl,
     write_list(List),
-    local_max(List, Max), nl,
-    length(Max, Length), write(Length).
+    loc_max(List, Max).
 
-% Предикат для нахождения локального максимума local_max(+List, -Max).
-local_max([],[]).
-local_max([H|T], [H|MaxT]):-
-    T = [H1|_],
-    H > H1,
-    local_max(T, MaxT).
+% Предикат для нахождения локального максимума loc_max(+List, -Count).
+loc_max(List, Count):-
+    append_zeros(List, NewList),
+    lmh(NewList, 0, 0, Count).
+    
+% Так надо.
+append_zeros(List, NewList):- append(List, [0,0], NewList).
 
-% Если 1-ый < 2-го, то идем дальше по списку.
-local_max([_|T], MaxT):-
-    local_max(T, MaxT).
+lmh([0], _, Cou, Cou):- !.
+lmh([H|T], Pred, CurCou, Ans):-
+    T \= [] -> T = [Next|_],
+    (   H > Next, H > Pred -> NewPred = H, NewCurCou is CurCou + 1, lmh(T, NewPred, NewCurCou, Ans)
+    ;   NewPred = H, lmh(T, NewPred, CurCou, Ans)).

@@ -73,14 +73,14 @@ main_three(N, Max):-
 
 % Предикат для нахождения локального максимума loc_max(+List, -Count).
 loc_max(List, Count):-
-    append_zeros(List, NewList),
-    lmh(NewList, 0, 0, Count).
-    
-% Так надо.
-append_zeros(List, NewList):- append(List, [0,0], NewList).
+    append_zeros(List, [H|T]),
+    lmh([H|T], H - 1, 0, Count).
+
+append_zeros(List, NewList):- append(List, [0, 0], NewList).
 
 lmh([0], _, Cou, Cou):- !.
 lmh([H|T], Pred, CurCou, Ans):-
     T \= [] -> T = [Next|_],
-    (   H > Next, H > Pred -> NewPred = H, NewCurCou is CurCou + 1, lmh(T, NewPred, NewCurCou, Ans)
-    ;   NewPred = H, lmh(T, NewPred, CurCou, Ans)).
+    ( T == [0, 0], abs(H, NewH),NewNext is Next - NewH - 1, H > Pred, H > NewNext, NewCurCou is CurCou + 1, lmh(T, Pred, NewCurCou, Ans), !
+    ; H > Next, H > Pred -> NewPred = H, NewCurCou is CurCou + 1, lmh(T, NewPred, NewCurCou, Ans)
+    ; NewPred = H, lmh(T, NewPred, CurCou, Ans)).

@@ -1,0 +1,68 @@
+read_list(0, []):- !.
+read_list(N, [H|T]):- read(H), NewN is N - 1, read_list(NewN, T).
+
+write_list([]) :- !.
+write_list([H|T]) :- write(H), nl, write_list(T).
+
+% Предикат для нахождения НОД.
+% nod(+Num1, +Num2, -Del).
+nod(Num1, Num2, Del):-
+    (   Num1 =< Num2 -> nod_help(Num1, Num2, Del);
+    nod_help(Num2, Num1, Del)).
+
+nod_help(Num1, Num2, Del):-
+    (   Num2 =:= 0 -> Del = Num1;
+    NewNum2 is Num1 mod Num2, nod_help(Num2, NewNum2, Del)).
+
+% Вариант № 4. 
+% Найти количество четных чисел, не взаимно простых с данным.
+% main_one(+N, -Answer).
+main_one(N, Answer):-
+    read_list(N, List), nl,
+    write('Введите число, с которым нужно сравнить: '), read(Number),
+    chet_not_prost(List, Number, Answer), nl,
+    write_list(List).
+
+% Предикат, подсчитывающий кол-во четных, не взаимно простых чисел. 
+% chet_not_prost(+List, +Number, -Count).
+chet_not_prost(List, Number, Count):-
+    chet_not_prost_help(List, Number, 0, Count).
+chet_not_prost_help([], _, Cou, Cou).
+chet_not_prost_help([H|T], N, CurCou, Cou):-
+    H mod 2 =:= 0,
+    nod(H, N, Del), Del \= 1 -> NewCurCou is CurCou + 1, chet_not_prost_help(T, N, NewCurCou, Cou);
+    chet_not_prost_help(T, N, CurCou, Cou).
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+% Поиск максимального. my_max(+List, -Max).
+my_max(List, Max):-
+    my_max_help(List, 0, Max).
+my_max_help([], Max, Max).
+my_max_help([H|T], CurMax, Max):-
+    (   CurMax < H -> NewCurMax is H, my_max_help(T, NewCurMax, Max)
+    ;   my_max_help(T, CurMax, Max)
+    ).
+
+% Сумма цифр меньших 5. summa_digits(+Number, -Summa).
+summa_digits(0, 0):- !.
+summa_digits(Number, Summa):-
+    Number > 0,
+    Number1 is Number mod 10,
+    (   Number1 < 5 -> Number2 is Number // 10, summa_digits(Number2, Summa1), Summa is Summa1 + Number1; Number2 is Number //10, summa_digits(Number2, Summa)).
+
+% Вариант № 4.
+% Найти произведение максимального числа, не взаимно простого с данным, 
+% не делящегося на наименьший делитель исходно числа, и суммы цифр числа, меньших 5.
+% main_two(+N, -Answer).
+main_two(N, Answer):-
+    read_list(N, List), nl,
+    write('Введите число, с которым нужно сравнить: '), read(Number),
+    no_prost_no_del_on_min(List, Number, Answer), nl,
+    write_list(List).
+
+% Предикат, находящий ответ. no_prost_no_del_on_min(+List, +Number, -Multiplic).
+no_prost_no_del_on_min(List, Number, Multiplic):-
+    my_max(List, Max),
+    summa_digits(Max, Summa),
+    nod(Max, Number, Del), Del \= 1,
+    Multiplic is Max * Summa.
